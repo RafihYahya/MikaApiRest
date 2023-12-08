@@ -19,12 +19,15 @@ class AuthController extends Controller
     {
         $request->validated($request->all());
         if (!Auth::attempt($request->only("email", "password"))) {
+
             return $this->Err('', "Wrong Email Or Pasword", 401);
         }
         $user = User::where("email", $request->email)->first();
+        $token = $user->createToken('ApiToken Of ' . $user->name)->plainTextToken;
+
         return $this->Ok([
             "user" => $user,
-            "token" => $user->createToken('ApiToken Of ' . $user->name)->plainTextToken,
+            "token" => $token,
             'isAuth' => Auth::check()
         ]);
     }
@@ -46,7 +49,11 @@ class AuthController extends Controller
     }
     public function logout()
     {
-        return $this->Ok('logout in worked');
+        if (Auth::check()) {
+            Auth::user()->tokens()->delete();
+            return $this->Ok('logout Successful ');
+        }
+        return $this->Err('','Not Authenticated To LogOut',401);
     }
 
 }

@@ -1,9 +1,11 @@
 <?php
 
-use App\Http\Controllers\AuthController;
-use App\Http\Controllers\Guest\PostsController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\AuthController;
+use App\Http\Controllers\PostsController;
+use App\Http\Controllers\CheckAuthUserController;
+use App\Http\Controllers\ReturnAuthUserController;
 
 /*
 |--------------------------------------------------------------------------
@@ -19,13 +21,12 @@ use Illuminate\Support\Facades\Route;
 Route::post('/login', [AuthController::class,'login']);
 Route::post('/register', [AuthController::class,'register']);
 Route::post('/logout', [AuthController::class,'logout']);
-
-Route::middleware('auth:sanctum')->post('/post/create', [PostsController::class,'create']);
+Route::get('/post/{id}', [PostsController::class,'show']);
 
 //PROTECTED ROUTES 
 /////////////////////////////////////////////////////////////////////////////////////////
 
-Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
-    return $request->user();
-});
+Route::middleware('auth:sanctum')->post('/post/create', [PostsController::class,'create']);
+Route::middleware('auth:sanctum')->get('/whoami', [ReturnAuthUserController::class,'index']);
+
 

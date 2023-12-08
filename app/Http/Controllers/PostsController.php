@@ -1,11 +1,10 @@
 <?php
 
-namespace App\Http\Controllers\Guest;
+namespace App\Http\Controllers;
 
 use App\Models\Post;
 use App\Traits\HttpResponses;
 use Illuminate\Http\Request;
-use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
 
 class PostsController extends Controller
@@ -25,11 +24,11 @@ class PostsController extends Controller
     public function create(Request $request)
     {
         $this->validate($request, [
-            "post" => ["required","string"],
+            "post" => ["required", "string"],
         ]);
         $post = Post::create([
             "user_id" => Auth::user()->id,
-            "post"=> $request->post,
+            "post" => $request->post,
         ]);
         return $this->Ok([
             "Post" => $post,
@@ -38,27 +37,15 @@ class PostsController extends Controller
     }
 
     /**
-     * Store a newly created resource in storage.
-     */
-    public function store(Request $request)
-    {
-        //
-    }
-
-    /**
      * Display the specified resource.
      */
     public function show(string $id)
     {
-        //
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(string $id)
-    {
-        //
+        $post = Post::all()->where("id", $id)->first();
+        return $this->Ok([
+            "post" => $post,
+            "user_id" => Auth::user()->id
+        ]);
     }
 
     /**
