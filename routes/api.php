@@ -22,12 +22,15 @@ Route::post('/login', [AuthController::class,'login']);
 Route::post('/register', [AuthController::class,'register']);
 Route::post('/logout', [AuthController::class,'logout']);
 Route::get('/post/{id}', [PostsController::class,'show']);
+Route::get('/posts/{name}', [PostsController::class,'showAllWhere']);
+
 
 //PROTECTED ROUTES 
 /////////////////////////////////////////////////////////////////////////////////////////
 
 Route::middleware('auth:sanctum')->post('/post/create', [PostsController::class,'create']);
 Route::middleware('auth:sanctum')->get('/whoami', [ReturnAuthUserController::class,'index']);
+Route::middleware('auth:sanctum')->get('/posts', [PostsController::class,'showAll']);
 
 
 

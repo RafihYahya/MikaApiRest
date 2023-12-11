@@ -3,8 +3,9 @@
 namespace App\Http\Controllers;
 
 use App\Models\Post;
-use App\Traits\HttpResponses;
+use App\Models\User;
 use Illuminate\Http\Request;
+use App\Traits\HttpResponses;
 use Illuminate\Support\Facades\Auth;
 
 class PostsController extends Controller
@@ -41,11 +42,14 @@ class PostsController extends Controller
      */
     public function show(string $id)
     {
-        $post = Post::all()->where("id", $id)->first();
-        return $this->Ok([
-            "post" => $post,
-            "user_id" => Auth::user()->id
-        ]);
+        $post = Post::where("id", $id)->first();
+        if (is_null($post)) {
+            return $this->Err("No Post With Such Id Exist", 405);
+        } else {
+           return  $this->Ok([
+                "post" => $post,
+            ]);
+        }
     }
 
     /**
@@ -62,5 +66,26 @@ class PostsController extends Controller
     public function destroy(string $id)
     {
         //
+    }
+    public function showAll()
+    {
+        $post = Post::all()->where("user_id", Auth::user()->id);
+        return $this->Ok([
+            "post" => $post,
+            "owner" => Auth::user()->name
+        ]);
+    }
+    public function showAllWhere(string $name)
+    {
+        $user = User::where("name", $name)->first();
+        if (is_null($user)) {
+            return $this->Err("Name Doesn't Exist. Try Another One", 405);
+        } else {
+            $post = Post::all()->where("user_id", $user->id);
+            return $this->Ok([
+                "post" => $post,
+                "owner" => $user->name
+            ]);
+        }
     }
 }
