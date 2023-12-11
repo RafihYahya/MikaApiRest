@@ -30,3 +30,6 @@ Route::middleware('auth:sanctum')->post('/post/create', [PostsController::class,
 Route::middleware('auth:sanctum')->get('/whoami', [ReturnAuthUserController::class,'index']);
 
 
+
+
+
