@@ -19,12 +19,3 @@ Route::get('/', function () {
 });
 
 
-
-Route::post('/hehe1', function (Request $request) {
-    return view('hehe1',["src" => $request->input('name')]);
-});
-
-
-Route::get('/hehe', function () {
-    return view('hehe');
-});
