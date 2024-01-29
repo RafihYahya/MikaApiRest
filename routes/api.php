@@ -35,4 +35,3 @@ Route::middleware('auth:sanctum')->get('/posts', [PostsController::class,'showAl
 
 
 
-
