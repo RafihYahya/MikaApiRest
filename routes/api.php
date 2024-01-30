@@ -38,6 +38,7 @@ Route::middleware('auth:sanctum')->get('/posts', [PostsController::class,'showAl
 Route::middleware('auth:sanctum')->get('/alllikedposts', [PostsController::class,'showAllAuthUserLikedPost']);
 Route::middleware('auth:sanctum')->get('/alldislikedposts', [PostsController::class,'showAllAuthUserDisLikedPost']);
 Route::middleware('auth:sanctum')->get('/alllovedposts', [PostsController::class,'showAllAuthUserLovedPost']);
+Route::middleware('auth:sanctum')->get('/allactionspost/{postId}', [PostActionController::class,'ShowAllActionsPost']);
 
 
 
@@ -50,7 +51,11 @@ Route::middleware('auth:sanctum')->post('/post/like/{postId}',[PostActionControl
 Route::middleware('auth:sanctum')->delete('/post/removelike/{postId}',[PostActionController::class,'RemoveLikeFromPost']);
 
 Route::middleware('auth:sanctum')->post('/post/dislike/{postId}',[PostActionController::class,'AddDisLikeToPost']);
+Route::middleware('auth:sanctum')->delete('/post/removedislike/{postId}',[PostActionController::class,'RemoveDislikeFromPost']);
+
 Route::middleware('auth:sanctum')->post('/post/love/{postId}',[PostActionController::class,'AddLoveToPost']);
+Route::middleware('auth:sanctum')->delete('/post/removelove/{postId}',[PostActionController::class,'RemoveLoveFromPost']);
+
 Route::middleware('auth:sanctum')->post('/post/comment/{postId}',[PostActionController::class,'AddCommentToPost']);
 
 

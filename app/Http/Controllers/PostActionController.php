@@ -49,8 +49,8 @@ class PostActionController extends Controller
         $like = Like::where([
             "post_id" => $postId,
             "user_id" => Auth::user()->id
-        ]);
-        if (empty($like)) {
+        ])->first();
+        if (!empty($like)) {
             $like->delete();
             return $this->Ok([
                 "post_id" => $postId,
@@ -59,6 +59,44 @@ class PostActionController extends Controller
         } else {
             return $this->Err(
                 "No Like To Remove",
+                403
+            );
+        }
+    }
+    public function RemoveDislikeFromPost($postId)
+    {
+        $dislike = Dislike::where([
+            "post_id" => $postId,
+            "user_id" => Auth::user()->id
+        ])->first();
+        if (!empty($dislike)) {
+            $dislike->delete();
+            return $this->Ok([
+                "post_id" => $postId,
+                "user" => Auth::user()->id
+            ]);
+        } else {
+            return $this->Err(
+                "No Dislike To Remove",
+                403
+            );
+        }
+    }
+    public function RemoveLoveFromPost($postId)
+    {
+        $love = Love::where([
+            "post_id" => $postId,
+            "user_id" => Auth::user()->id
+        ])->first();
+        if (!empty($love)) {
+            $love->delete();
+            return $this->Ok([
+                "post_id" => $postId,
+                "user" => Auth::user()->id
+            ]);
+        } else {
+            return $this->Err(
+                "No Love To Remove",
                 403
             );
         }
@@ -135,6 +173,29 @@ class PostActionController extends Controller
 
         } else {
             return $this->Err("Post Doesn't Exist", 403);
+        }
+    }
+
+    public function ShowAllActionsPost($postId)
+    {
+
+        $post = Post::where(["id" => $postId])->first();
+        if (!empty($post)) {
+            $likes = Like::all()->where("post_id", $postId);
+            $dislikes = Dislike::all()->where("post_id", $postId);
+            $loves = Love::all()->where("post_id", $postId);
+            return $this->Ok([
+                "Likes_Count" => $likes->count(),
+                "Dislikes_Count" => $dislikes->count(),
+                "Loves_Count" => $loves->count(),
+                "Likes" => $likes,
+                "Dislikes" => $dislikes,
+                "Loves" => $loves,
+
+            ]);
+        }
+        else{
+            return $this->Err("No Post Found",404);
         }
     }
 }
