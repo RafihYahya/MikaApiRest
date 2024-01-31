@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Like;
 use App\Models\Love;
 use App\Models\Post;
+use App\Models\User;
 use App\Models\Dislike;
 use App\Models\Postcomments;
 use Illuminate\Http\Request;
@@ -33,6 +34,11 @@ class PostActionController extends Controller
                 "user_id" => Auth::user()->id,
                 "post_id" => intval($postId),
             ]);
+
+            $user = User::where(["id" => $like->user_id])->first();
+            $user->likeNum = $user->likeNum + 1;
+            $user->save();
+
             return $this->Ok([
                 "like" => $like,
             ]);
@@ -118,6 +124,11 @@ class PostActionController extends Controller
                 "user_id" => Auth::user()->id,
                 "post_id" => intval($postId),
             ]);
+
+            $user = User::where(["id" => $dislike->user_id])->first();
+            $user->dislikeNum = $user->dislikeNum + 1;
+            $user->save();
+
             return $this->Ok([
                 "like" => $dislike,
             ]);
@@ -146,6 +157,11 @@ class PostActionController extends Controller
                 "user_id" => Auth::user()->id,
                 "post_id" => intval($postId),
             ]);
+
+            $user = User::where(["id" => $love->user_id])->first();
+            $user->loveNum = $user->loveNum + 1;
+            $user->save();
+
             return $this->Ok([
                 "like" => $love,
             ]);
@@ -167,12 +183,37 @@ class PostActionController extends Controller
                 "comment" => $request->body,
                 "post_id" => intval($postId),
             ]);
+
+            $user = User::where(["id" => $comment->user_id])->first();
+            $user->commentNum = $user->commentNum + 1;
+            $user->save();
+
             return $this->Ok([
                 "like" => $comment,
             ]);
 
         } else {
             return $this->Err("Post Doesn't Exist", 403);
+        }
+    }
+    public function RemoveCommentFromPost($postId)
+    {
+        $comment = Postcomments::where([
+            "post_id" => $postId,
+            "user_id" => Auth::user()->id
+        ])->first();
+        if (!empty($comment)) {
+            $comment->delete();
+            return $this->Ok([
+                "post_id" => $postId,
+                "body" => $comment->comment,
+                "user" => Auth::user()->id
+            ]);
+        } else {
+            return $this->Err(
+                "No Comment To Remove",
+                403
+            );
         }
     }
 
@@ -193,9 +234,8 @@ class PostActionController extends Controller
                 "Loves" => $loves,
 
             ]);
-        }
-        else{
-            return $this->Err("No Post Found",404);
+        } else {
+            return $this->Err("No Post Found", 404);
         }
     }
 }

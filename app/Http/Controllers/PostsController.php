@@ -34,6 +34,11 @@ class PostsController extends Controller
             "user_id" => Auth::user()->id,
             "post" => $request->post,
         ]);
+
+        $user = User::where(["id" => Auth::user()->id])->first();
+        $user->postNum = $user->postNum + 1;
+        $user->save();
+
         return $this->Ok([
             "Post" => $post,
             "User" => $post->user_id

@@ -1,10 +1,11 @@
 <?php
 
-use App\Http\Controllers\PostActionController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\PostsController;
+use App\Http\Controllers\PublicController;
+use App\Http\Controllers\PostActionController;
 use App\Http\Controllers\CheckAuthUserController;
 use App\Http\Controllers\ReturnAuthUserController;
 
@@ -24,6 +25,7 @@ Route::post('/register', [AuthController::class,'register']);
 Route::post('/logout', [AuthController::class,'logout']);
 Route::get('/post/{id}', [PostsController::class,'show']);
 Route::get('/posts/{name}', [PostsController::class,'showAllWhere']);
+Route::get('/user/{id}', [PublicController::class,'userInfo']);
 
 
 //PROTECTED ROUTES 
@@ -42,8 +44,12 @@ Route::middleware('auth:sanctum')->get('/allactionspost/{postId}', [PostActionCo
 
 
 
+
+
 Route::middleware('auth:sanctum')->delete('/post/delete/{id}',[PostsController::class,'deleteSingletonPost']);
 Route::middleware('auth:sanctum')->put('/post/update/{id}',[PostsController::class,'updateSingletonPost']);
+
+
 
 
 
@@ -57,6 +63,7 @@ Route::middleware('auth:sanctum')->post('/post/love/{postId}',[PostActionControl
 Route::middleware('auth:sanctum')->delete('/post/removelove/{postId}',[PostActionController::class,'RemoveLoveFromPost']);
 
 Route::middleware('auth:sanctum')->post('/post/comment/{postId}',[PostActionController::class,'AddCommentToPost']);
+Route::middleware('auth:sanctum')->delete('/post/removecomment/{postId}',[PostActionController::class,'RemoveCommentFromPost']);
 
 
 

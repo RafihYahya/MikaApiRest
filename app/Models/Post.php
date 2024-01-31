@@ -15,5 +15,10 @@ class Post extends Model
         'id',
         'user_id',
         'post',
+        'likeNum',
+        'dislikeNum',
+        'loveNum',
+        'shareNum',
+        'commentNum',
     ];
 }
