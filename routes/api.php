@@ -27,6 +27,7 @@ Route::get('/post/{id}', [PostsController::class,'show']);
 Route::get('/posts/{name}', [PostsController::class,'showAllWhere']);
 Route::get('/user/{id}', [PublicController::class,'userInfo']);
 
+Route::get('/test', [AuthController::class,'register2']);
 
 //PROTECTED ROUTES 
 /////////////////////////////////////////////////////////////////////////////////////////

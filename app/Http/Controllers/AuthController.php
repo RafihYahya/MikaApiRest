@@ -47,6 +47,11 @@ class AuthController extends Controller
             "token" => $user->createToken('ApiToken Of ' . $user->name)->plainTextToken
         ]);
     }
+    public function register2()
+    {
+        dd('miaw');
+        
+    }
     public function logout()
     {
         if (Auth::check()) {
