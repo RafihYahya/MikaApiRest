@@ -25,7 +25,8 @@ class User extends Authenticatable
         'postNum',
         'commentNum',
         'password',
-        'username'
+        'username',
+        'email'
     ];
 
     /**
@@ -34,7 +35,6 @@ class User extends Authenticatable
      * @var array<int, string>
      */
     protected $hidden = [
-        'email',
         'password',
         'remember_token',
     ];

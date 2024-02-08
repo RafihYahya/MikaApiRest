@@ -36,8 +36,14 @@ class PostActionController extends Controller
             ]);
 
             $user = User::where(["id" => $like->user_id])->first();
-            $user->likeNum = $user->likeNum + 1;
+            $user->likeNum = ($user->likeNum) + 1;
+            
+            $post = Post::where(["id" => $like->post_id])->first();
+            $post->likeNum = ($post->likeNum) + 1;
+
+
             $user->save();
+            $post->save();
 
             return $this->Ok([
                 "like" => $like,
@@ -126,8 +132,14 @@ class PostActionController extends Controller
             ]);
 
             $user = User::where(["id" => $dislike->user_id])->first();
-            $user->dislikeNum = $user->dislikeNum + 1;
+            $user->dislike = ($user->dislikeNum) + 1;
+            
+            $post = Post::where(["id" => $dislike->post_id])->first();
+            $post->dislike = ($post->dislikeNum) + 1;
+
+
             $user->save();
+            $post->save();
 
             return $this->Ok([
                 "like" => $dislike,
@@ -159,8 +171,14 @@ class PostActionController extends Controller
             ]);
 
             $user = User::where(["id" => $love->user_id])->first();
-            $user->loveNum = $user->loveNum + 1;
+            $user->loveNum = ($user->loveNum) + 1;
+            
+            $post = Post::where(["id" => $love->post_id])->first();
+            $post->loveNum = ($post->loveNum) + 1;
+
+
             $user->save();
+            $post->save();
 
             return $this->Ok([
                 "like" => $love,
@@ -185,8 +203,14 @@ class PostActionController extends Controller
             ]);
 
             $user = User::where(["id" => $comment->user_id])->first();
-            $user->commentNum = $user->commentNum + 1;
+            $user->commentNum = ($user->commentNum) + 1;
+            
+            $post = Post::where(["id" => $comment->post_id])->first();
+            $post->commentNum = ($post->commentNum) + 1;
+
+
             $user->save();
+            $post->save();
 
             return $this->Ok([
                 "like" => $comment,

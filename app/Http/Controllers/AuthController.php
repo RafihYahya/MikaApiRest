@@ -17,10 +17,13 @@ class AuthController extends Controller
      */
     public function login(LoginRequest $request)
     {
-        $request->validated($request->all());
+        $request->validate([
+            'email' => 'email|required|max:255',
+            'password'=> 'required|max:255',
+        ]);
         if (!Auth::attempt($request->only("email", "password"))) {
 
-            return $this->Err('', "Wrong Email Or Pasword", 401);
+            return $this->Err("Wrong Email Or Pasword", 401);
         }
         $user = User::where("email", $request->email)->first();
         $token = $user->createToken('ApiToken Of ' . $user->name)->plainTextToken;
@@ -33,7 +36,12 @@ class AuthController extends Controller
     }
     public function register(RegisterRequest $request)
     {
-        $request->validated($request->all());
+        $request->validate([
+            'name' => 'required|max:255',
+            'username' => 'required|unique:users|max:255',
+            'email' => 'required|email|unique:users|max:255',
+            'password' => 'required|max:255|confirmed'
+        ]);
         $user = User::create(
             [
                 "name" => $request->name,
@@ -49,16 +57,30 @@ class AuthController extends Controller
     }
     public function register2()
     {
-        dd('miaw');
+        $user = User::create(
+            [
+                "name" => 'miaw',
+                "username" => 'miaw2',
+                "email" => 'miaw@gmail.com',
+                "password" => bcrypt('0000'),
+            ]
+        );
+        return $this->Ok([
+            "user" => $user,
+            "token" => $user->createToken('ApiToken Of ' . $user->name)->plainTextToken
+        ]);
         
     }
     public function logout()
     {
         if (Auth::check()) {
             Auth::user()->tokens()->delete();
-            return $this->Ok('logout Successful ');
+            return $this->Ok([
+                'status' => 'Logged out',
+                'user' => Auth::user()->name
+            ]);
         }
-        return $this->Err('','Not Authenticated To LogOut',401);
+        return $this->Err('Not Authenticated To LogOut',401);
     }
 
 }

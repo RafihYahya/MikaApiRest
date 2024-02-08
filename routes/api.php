@@ -22,12 +22,11 @@ use App\Http\Controllers\ReturnAuthUserController;
 
 Route::post('/login', [AuthController::class,'login']);
 Route::post('/register', [AuthController::class,'register']);
-Route::post('/logout', [AuthController::class,'logout']);
 Route::get('/post/{id}', [PostsController::class,'show']);
 Route::get('/posts/{name}', [PostsController::class,'showAllWhere']);
 Route::get('/user/{id}', [PublicController::class,'userInfo']);
 
-Route::get('/test', [AuthController::class,'register2']);
+//Route::post('/test', [AuthController::class,'register2']);
 
 //PROTECTED ROUTES 
 /////////////////////////////////////////////////////////////////////////////////////////
@@ -36,6 +35,7 @@ Route::middleware('auth:sanctum')->post('/post/create', [PostsController::class,
 Route::middleware('auth:sanctum')->get('/whoami', [ReturnAuthUserController::class,'index']);
 Route::middleware('auth:sanctum')->get('/posts', [PostsController::class,'showAll']);
 
+Route::middleware('auth:sanctum')->post('/logout', [AuthController::class,'logout']);
 
 
 Route::middleware('auth:sanctum')->get('/alllikedposts', [PostsController::class,'showAllAuthUserLikedPost']);

@@ -12,11 +12,11 @@ return new class extends Migration
     public function up(): void
     {
         Schema::table('posts', function (Blueprint $table) {
-            $table->integer('loveNum')->nullable();
-            $table->integer('likeNum')->nullable();
-            $table->integer('dislikeNum')->nullable();
-            $table->integer('commentNum')->nullable();
-            $table->integer('shareNum')->nullable();
+            $table->integer('loveNum')->default(0);
+            $table->integer('likeNum')->default(0);
+            $table->integer('dislikeNum')->default(0);
+            $table->integer('commentNum')->default(0);
+            $table->integer('shareNum')->default(0);
         });
     }
 
